@@ -24,41 +24,56 @@ claude --version
 
 ## Step 1 — Clone dotfiles
 
-```bash
-git clone https://github.com/YOUR_USERNAME/claude-dotfiles.git ~/claude-dotfiles
-cd ~/claude-dotfiles
-chmod +x install.sh plugins.sh project-init.sh   # Mac/Linux only
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/koutsosg/claude-dotfiles.git $HOME\claude-dotfiles
 ```
 
-> Windows (Git Bash): the `chmod` is ignored but the scripts run fine.
+**Mac / Linux (Terminal):**
+```bash
+git clone https://github.com/koutsosg/claude-dotfiles.git ~/claude-dotfiles
+chmod +x ~/claude-dotfiles/install.sh ~/claude-dotfiles/plugins.sh ~/claude-dotfiles/project-init.sh
+```
 
 ---
 
 ## Step 2 — Global install (CLAUDE.md + meta-skills)
 
+**Windows (PowerShell):**
+```powershell
+bash $HOME\claude-dotfiles\install.sh --global
+```
+
+**Mac / Linux:**
 ```bash
-./install.sh --global
+~/claude-dotfiles/install.sh --global
 ```
 
 Installs into `~/.claude/`:
-- `CLAUDE.md` — global rules (Greek responses, npm, no auto-commit, etc.)
+- `CLAUDE.md` — global rules (language, style, git behavior, etc.)
 - `skills/skill-builder/`, `skills/skill-design-guide/`, `skills/ui-ux-pro-max/`
 
 ---
 
 ## Step 3 — Plugins + LSP servers + MCP
 
+**Windows (PowerShell):**
+```powershell
+bash $HOME\claude-dotfiles\plugins.sh
+```
+
+**Mac / Linux:**
 ```bash
-./plugins.sh
+~/claude-dotfiles/plugins.sh
 ```
 
 Installs:
 - Claude plugins: `feature-dev`, `commit-commands`, `pr-review-toolkit`, `security-guidance`, `typescript-lsp`, `php-lsp`, `aws-skills`, `frontend-design`, `plugin-dev`, `hookify`
-- DevOps plugins: `iac-terraform`, `aws-cost-optimization`, `ci-cd` (from `ahmedasmar/devops-claude-skills`), `sre-engineer`
+- DevOps plugins: `iac-terraform`, `aws-cost-optimization`, `ci-cd`, `sre-engineer`
 - npm globals: `typescript-language-server`, `typescript`, `intelephense`
 - MCP: `context7` (live library docs)
 
-> If a plugin fails with "already installed", that's fine — continue.
+> If a plugin fails with "already installed" — fine, continue.
 
 ---
 
@@ -70,7 +85,7 @@ Open Claude Code and run:
 /gsd:update
 ```
 
-This self-installs all `gsd:*` skills, agents, hooks, and commands. GSD is self-managed — never install it manually.
+GSD is self-managed — never install it manually. This installs all `gsd:*` skills, agents, hooks, and commands.
 
 ---
 
@@ -95,71 +110,49 @@ Report what's missing or broken and suggest the exact command to fix each issue.
 
 ## Setting up a NEW project (from scratch)
 
-### 1. Install project-level skills/agents/rules
+### 1. Create project root + install skills
 
+**Windows (PowerShell):**
+```powershell
+mkdir C:\projects\myproject
+cd C:\projects\myproject
+git init
+bash $HOME\claude-dotfiles\install.sh --project
+```
+
+**Mac / Linux:**
 ```bash
-cd /path/to/your-project
+mkdir ~/projects/myproject && cd ~/projects/myproject
+git init
 ~/claude-dotfiles/install.sh --project
 ```
 
-Copies into `.claude/`: 25 skills, agents (`fullstack-architect`), commands, rules.
+Copies into `.claude/`: 25 skills, agents, commands, rules + `.gitignore` template.
 
-### 2. Generate project documentation
+> Open `.gitignore` and uncomment your service folder names at the top.
 
-```bash
-~/claude-dotfiles/project-init.sh
-```
+### 2. Bootstrap with Claude
 
-Claude will analyze the codebase and create:
-- `CLAUDE.md` — project guide
-- `.claude/project-knowledge/` — deep docs (auth, API, DB, architecture, etc.)
-
-> For a large codebase this takes 5-10 minutes.
-
-### 3. Initialize GSD planning
-
-Inside Claude Code, from the project root:
-
-```
-/gsd:new-project
-```
-
-Creates:
-- `.planning/PROJECT.md` — vision, goals, constraints
-- `.planning/ROADMAP.md` — milestones and phases
-- `.planning/REQUIREMENTS.md`
-
-### 4. Set up project hookify rules
-
-```
-/hookify:configure
-```
-
-Configure project-specific workflow guards (no .env commits, no console.log, API URL checks, etc.).
+Open Claude Code at the project root and paste the contents of `NEW-PROJECT-PROMPT.md`.
+Claude will analyze the codebase, create `CLAUDE.md` + knowledge files, initialize GSD, and set up hookify.
 
 ---
 
 ## Setting up an EXISTING project (already has CLAUDE.md + .planning/)
 
+**Windows (PowerShell):**
+```powershell
+cd C:\projects\myproject
+bash $HOME\claude-dotfiles\install.sh --project
+```
+
+**Mac / Linux:**
 ```bash
-cd /path/to/your-project
+cd ~/projects/myproject
 ~/claude-dotfiles/install.sh --project
 ```
 
-That's it — skills/agents/rules are installed. GSD planning already exists in `.planning/`.
-
-To resume work:
-```
-/gsd:resume-work
-```
-
----
-
-## Paste-and-run Claude prompt for new project bootstrap
-
-After steps 1-4 above, paste this into Claude Code at the project root for a full bootstrap:
-
----
+Then open Claude Code and paste:
 
 ```
 I'm setting up this project on a new machine. My claude-dotfiles are already installed globally.
@@ -167,11 +160,10 @@ I'm setting up this project on a new machine. My claude-dotfiles are already ins
 Please do the following in order:
 
 1. Read CLAUDE.md and all files in .claude/project-knowledge/ (if they exist).
-   If they don't exist, analyze the codebase deeply and create them now
-   (use the project-init.sh logic: CLAUDE.md + 8 knowledge files).
+   If they don't exist, analyze the codebase deeply and create them now.
 
 2. Read .planning/PROJECT.md, .planning/ROADMAP.md, and .planning/STATE.md
-   (if they exist) to understand project status.
+   to understand project status.
    If .planning/ doesn't exist, run /gsd:new-project to initialize planning.
 
 3. Check .planning/phases/ for any in-progress phase.
@@ -190,13 +182,10 @@ Don't make any code changes yet — just report.
 
 ## Quick reference
 
-| Task | Command |
-|------|---------|
-| Update dotfiles | `cd ~/claude-dotfiles && git pull && ./install.sh --all && ./plugins.sh` |
-| Update GSD | `/gsd:update` inside Claude Code |
-| Add project skills to new project | `~/claude-dotfiles/install.sh --project` |
-| Generate project docs | `~/claude-dotfiles/project-init.sh` |
-| Resume GSD work | `/gsd:resume-work` |
-| Check GSD progress | `/gsd:progress` |
-| Plan next phase | `/gsd:plan-phase` |
-| Execute phase | `/gsd:execute-phase` |
+| Task | Windows (PowerShell) | Mac / Linux |
+|------|----------------------|-------------|
+| Update dotfiles | `cd $HOME\claude-dotfiles; git pull; bash install.sh --all; bash plugins.sh` | `cd ~/claude-dotfiles && git pull && ./install.sh --all && ./plugins.sh` |
+| Update GSD | `/gsd:update` inside Claude Code | same |
+| Install project skills | `bash $HOME\claude-dotfiles\install.sh --project` | `~/claude-dotfiles/install.sh --project` |
+| Resume GSD work | `/gsd:resume-work` inside Claude Code | same |
+| Check GSD progress | `/gsd:progress` inside Claude Code | same |
