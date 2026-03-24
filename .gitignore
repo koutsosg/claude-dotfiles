@@ -1,0 +1,18 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups created by install.sh
+*.bak.*
+
+# Claude runtime (never commit these)
+.claude/cache/
+.claude/history.jsonl
+.claude/debug/
+.claude/agent-memory/
+.claude/gsd-file-manifest.json
+.claude/get-shit-done/
+.claude/commands/gsd/
+.claude/agents/gsd-*.md
+.claude/hooks/gsd-*.js
+.claude/settings.json
