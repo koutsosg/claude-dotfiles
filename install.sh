@@ -142,6 +142,15 @@ install_project() {
     copy_file "$f" "$claude_dir/rules/$(basename "$f")"
   done
 
+  echo ".gitignore (multi-service template):"
+  local gitignore="$project_dir/.gitignore"
+  if [[ ! -f "$gitignore" ]]; then
+    cp "$DOTFILES_DIR/project/templates/gitignore-multi-service" "$gitignore"
+    echo "  → .gitignore (created — add your service folder names at the top)"
+  else
+    echo "  → .gitignore already exists, skipping"
+  fi
+
   echo ""
   echo "Project install complete."
   echo "Restart Claude Code to load updated skills/agents/commands/rules."

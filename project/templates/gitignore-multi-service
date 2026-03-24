@@ -1,0 +1,35 @@
+# ── Multi-service project root .gitignore ─────────────────────────────────────
+#
+# This parent repo tracks ONLY: .planning/ .claude/ CLAUDE.md
+# Service subfolders have their own independent git repos — list them below
+# so they are never accidentally staged in the parent.
+#
+# Add your service folders here:
+# service-a/
+# service-b/
+# service-c/
+
+# ── OS ─────────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ── Editors ────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Env / secrets ──────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Logs / temp ────────────────────────────────────────────────────────────────
+*.log
+tmp/
+temp/
