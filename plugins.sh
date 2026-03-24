@@ -41,8 +41,13 @@ install_plugins() {
   claude plugin install typescript-lsp      # TypeScript/JS IntelliSense
   claude plugin install php-lsp            # PHP IntelliSense (WordPress)
 
-  # AWS (meta-plugin: aws-cdk, serverless-eda, cost-ops, agentic-ai, common)
-  claude plugin install aws-skills
+  # AWS (marketplace: zxkane/aws-skills — cdk, serverless, cost-ops, agentic-ai)
+  claude plugin marketplace add zxkane/aws-skills
+  claude plugin install aws-common@aws-skills
+  claude plugin install aws-cdk@aws-skills
+  claude plugin install aws-cost-ops@aws-skills
+  claude plugin install serverless-eda@aws-skills
+  claude plugin install aws-agentic-ai@aws-skills
 
   # Design & UI
   claude plugin install frontend-design    # production-grade UI skill για web components/pages
@@ -53,11 +58,11 @@ install_plugins() {
   # Custom hooks
   claude plugin install hookify            # /hookify — custom hooks για workflow automation
 
-  # DevOps (Terraform, AWS cost, CI/CD, SRE)
+  # DevOps (marketplace: ahmedasmar/devops-claude-skills — Terraform, AWS cost, CI/CD, SRE)
   claude plugin marketplace add https://github.com/ahmedasmar/devops-claude-skills
-  claude plugin install iac-terraform@devops-claude-skills      # Terraform + Terragrunt, modules, state
-  claude plugin install aws-cost-optimization@devops-claude-skills  # S3/Lambda FinOps
-  claude plugin install ci-cd@devops-claude-skills              # GitHub Actions, GitLab CI, pipeline security
+  claude plugin install iac-terraform@devops-skills      # Terraform + Terragrunt, modules, state
+  claude plugin install aws-cost-optimization@devops-skills  # S3/Lambda FinOps
+  claude plugin install ci-cd@devops-skills              # GitHub Actions, GitLab CI, pipeline security
   npx skills add https://github.com/jeffallan/claude-skills --skill sre-engineer  # SLO/monitoring/incident response
 
   echo ""

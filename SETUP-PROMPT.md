@@ -114,12 +114,17 @@ Also verify `claude mcp list` shows `context7`.
 
 ## Step 4 — GSD
 
-Tell me to do this manually (you cannot run it yourself — it requires an interactive Claude Code session):
+GSD is installed via npx — run this in the terminal:
 
-> "Please open a new Claude Code session (anywhere), type `/gsd:update`, and confirm it completes.
->  Then come back here and tell me it's done."
+```bash
+npx get-shit-done-cc@latest
+```
 
-Wait for my confirmation before continuing.
+When prompted:
+- Runtime: **Claude Code**
+- Install type: **global**
+
+Wait for it to complete, then confirm before continuing.
 
 ## Step 5 — Optional tools
 
@@ -138,7 +143,34 @@ Ask me which of these I want to install (list them with a yes/no prompt):
 
 Install only what I confirm.
 
-## Step 6 — Final report
+## Step 6 — Verification (numeric check)
+
+Run the following and verify the exact counts:
+
+```bash
+claude plugin list
+```
+Expected: **14 plugins**
+`feature-dev`, `commit-commands`, `pr-review-toolkit`, `security-guidance`,
+`typescript-lsp`, `php-lsp`, `frontend-design`, `plugin-dev`, `hookify`,
+`aws-common`, `aws-cdk`, `aws-cost-ops`, `serverless-eda`, `aws-agentic-ai`
+
+```bash
+claude mcp list
+```
+Expected: **1 MCP server** — `context7`
+
+```bash
+ls ~/.claude/skills/
+```
+Expected: **3 folders** — `skill-builder`, `skill-design-guide`, `ui-ux-pro-max`
+
+For GSD, inside Claude Code run `/gsd:help` — expected: **30+ gsd:* commands** listed.
+
+If all 4 checks pass — setup is complete.
+Report any mismatches with the exact count found vs expected.
+
+## Step 7 — Final report
 
 Provide a summary with three sections:
 
