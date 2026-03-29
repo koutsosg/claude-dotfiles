@@ -37,7 +37,7 @@ chmod +x ~/claude-dotfiles/install.sh ~/claude-dotfiles/plugins.sh ~/claude-dotf
 
 ---
 
-## Step 2 — Global install (CLAUDE.md + meta-skills)
+## Step 2 — Global install (CLAUDE.md + skills)
 
 **Windows (PowerShell):**
 ```powershell
@@ -49,9 +49,17 @@ bash $HOME\claude-dotfiles\install.sh --global
 ~/claude-dotfiles/install.sh --global
 ```
 
-Installs into `~/.claude/`:
+An **interactive menu** will appear — select skill categories and individual skills to install:
+
+| Category | Skills |
+|----------|--------|
+| General | notebooklm, skill-builder, skill-design-guide, ui-ux-pro-max |
+| Swift / Apple | swift, swiftui, ios, macos, watchos, visionos, core-ml, apple-intelligence, app-store, swiftdata, mapkit + more |
+| Mobile / Product | design, growth, monetization, legal, testing, product, release-review + more |
+| Android / Kotlin | android-kotlin, android-clean-architecture, android-jetpack-compose, kotlin-specialist, kotlin-coroutines-flows, kotlin-patterns |
+
+Also installs into `~/.claude/`:
 - `CLAUDE.md` — global rules (language, style, git behavior, etc.)
-- `skills/skill-builder/`, `skills/skill-design-guide/`, `skills/ui-ux-pro-max/`, `skills/notebooklm/`
 - `settings.json` — merged portable settings (enabledPlugins, alwaysThinkingEnabled)
 - GSD (Get Shit Done) — auto-installed via `npx get-shit-done-cc@latest --claude --global`
 
@@ -94,7 +102,7 @@ Open Claude Code and paste this verification prompt:
 ```
 Check my Claude Code setup. Verify:
 1. ~/.claude/CLAUDE.md exists and has content
-2. ~/.claude/skills/ contains: skill-builder, skill-design-guide, ui-ux-pro-max
+2. ~/.claude/skills/ contains your selected skills (at minimum: skill-builder, skill-design-guide, ui-ux-pro-max)
 3. Run `claude plugin list` and confirm these are installed:
    feature-dev, commit-commands, pr-review-toolkit, security-guidance,
    typescript-lsp, php-lsp, aws-skills, frontend-design, plugin-dev, hookify
@@ -125,7 +133,17 @@ git init
 ~/claude-dotfiles/install.sh --project
 ```
 
-Copies into `.claude/`: 25 skills, agents, commands, rules + `.gitignore` template.
+An **interactive menu** will appear — select categories and individual skills:
+
+| Category | Skills |
+|----------|--------|
+| Backend / API | api-design, database-migrations, postgres, docker-patterns |
+| Security | security-review, owasp-security, insecure-defaults, codeql, semgrep, sarif-parsing, sharp-edges |
+| Testing | test-driven-development, e2e-testing, playwright-skill, verification-before-completion |
+| Code Quality | coding-standards, systematic-debugging, second-opinion, finishing-a-development-branch, using-git-worktrees, changelog-generator |
+| Agents / Meta | dispatching-parallel-agents, subagent-driven-development |
+
+Also copies into `.claude/`: agents, commands, rules + `.gitignore` template.
 
 > Open `.gitignore` and uncomment your service folder names at the top.
 
