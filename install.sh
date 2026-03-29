@@ -98,6 +98,53 @@ copy_file() {
   echo "  → $(basename "$dst")"
 }
 
+# ── Merge settings-template.json → ~/.claude/settings.json ───────────────────
+merge_settings() {
+  local claude_home="$HOME/.claude"
+  local template="$DOTFILES_DIR/global/settings-template.json"
+  local target="$claude_home/settings.json"
+
+  if [[ ! -f "$template" ]]; then
+    echo "  Skipping (not found): $template"
+    return
+  fi
+
+  mkdir -p "$claude_home"
+
+  if [[ ! -f "$target" ]]; then
+    cp "$template" "$target"
+    echo "  → settings.json (created from template)"
+    return
+  fi
+
+  # Merge: inject portable keys (enabledPlugins, alwaysThinkingEnabled) into
+  # existing settings.json without touching GSD hooks or other runtime state.
+  SETTINGS_TARGET="$target" SETTINGS_TEMPLATE="$template" node - <<'NODEEOF'
+const fs = require('fs');
+const target = process.env.SETTINGS_TARGET;
+const template = process.env.SETTINGS_TEMPLATE;
+const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
+const tmpl = JSON.parse(fs.readFileSync(template, 'utf8'));
+if (tmpl.enabledPlugins)            existing.enabledPlugins = tmpl.enabledPlugins;
+if (tmpl.alwaysThinkingEnabled !== undefined) existing.alwaysThinkingEnabled = tmpl.alwaysThinkingEnabled;
+fs.writeFileSync(target, JSON.stringify(existing, null, 2) + '\n');
+console.log('  → settings.json (merged portable settings)');
+NODEEOF
+}
+
+# ── GSD install ────────────────────────────────────────────────────────────────
+install_gsd() {
+  echo ""
+  echo "=== Installing GSD (Get Shit Done) ==="
+  if command -v npx &>/dev/null; then
+    npx get-shit-done-cc@latest --claude --global
+    echo "  GSD installed globally."
+  else
+    echo "  npx not found — install Node.js first, then run:"
+    echo "  npx get-shit-done-cc@latest --claude --global"
+  fi
+}
+
 # ── Global install ─────────────────────────────────────────────────────────────
 install_global() {
   local claude_home="$HOME/.claude"
@@ -109,6 +156,12 @@ install_global() {
 
   echo "CLAUDE.md:"
   copy_file "$DOTFILES_DIR/global/CLAUDE.md" "$claude_home/CLAUDE.md"
+
+  echo "settings.json:"
+  merge_settings
+
+  echo ""
+  install_gsd
 
   echo ""
   echo "Global install complete."
@@ -142,6 +195,12 @@ install_project() {
     copy_file "$f" "$claude_dir/rules/$(basename "$f")"
   done
 
+  echo "Hookify rules:"
+  for f in "$DOTFILES_DIR/project/hookify-rules"/hookify.*.local.md; do
+    [[ -f "$f" ]] || continue
+    copy_file "$f" "$claude_dir/$(basename "$f")"
+  done
+
   echo ".gitignore (multi-service template):"
   local gitignore="$project_dir/.gitignore"
   if [[ ! -f "$gitignore" ]]; then
@@ -156,8 +215,8 @@ install_project() {
   echo "Restart Claude Code to load updated skills/agents/commands/rules."
   echo ""
   echo "Next steps:"
-  echo "  1. Run ./project-init.sh to generate CLAUDE.md + project knowledge"
-  echo "  2. Run ./plugins.sh to install Claude plugins"
+  echo "  1. Run ./plugins.sh to install Claude plugins + GSD"
+  echo "  2. Run ./project-init.sh to generate CLAUDE.md + project knowledge"
 }
 
 # ── Dispatch ───────────────────────────────────────────────────────────────────

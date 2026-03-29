@@ -9,13 +9,15 @@ Clone on any machine (Windows/Mac/Linux) and be productive in minutes.
 claude-dotfiles/
 ├── global/                      # → ~/.claude/
 │   ├── CLAUDE.md                # Global rules (Greek, npm, functional TS, no auto-commit)
+│   ├── settings-template.json   # Portable settings (enabledPlugins, alwaysThinkingEnabled)
 │   └── skills/
+│       ├── notebooklm/          # Google NotebookLM CLI skill
 │       ├── skill-builder/       # Meta-skill: create new skills
 │       ├── skill-design-guide/  # Meta-skill: skill design patterns
 │       └── ui-ux-pro-max/       # UI/UX design (50 styles, React/RN/Flutter)
 │
 └── project/                     # → .claude/ in any project
-    ├── skills/                  # 25 generic skills (manually managed)
+    ├── skills/                  # 24 generic skills (manually managed)
     ├── agents/
     │   └── fullstack-architect.md
     ├── commands/
@@ -23,18 +25,25 @@ claude-dotfiles/
     │   ├── code-review.md
     │   ├── e2e.md
     │   └── tdd.md
-    └── rules/
-        ├── common-security.md
-        ├── git-workflow.md
-        ├── typescript-security.md
-        └── typescript-style.md
+    ├── rules/
+    │   ├── common-security.md
+    │   ├── git-workflow.md
+    │   ├── typescript-security.md
+    │   └── typescript-style.md
+    └── hookify-rules/           # Generic hookify rule templates
+        ├── hookify.dangerous-commands.local.md
+        ├── hookify.no-auto-commit.local.md
+        ├── hookify.no-console-log.local.md
+        ├── hookify.no-env-commit.local.md
+        ├── hookify.no-typescript-any.local.md
+        └── hookify.protect-secrets.local.md
 ```
 
 ### Not in this repo (installed separately)
 
 | What | How to install |
 |------|---------------|
-| GSD (Get Shit Done) — 30+ gsd:* skills | `/gsd:update` inside Claude Code |
+| GSD (Get Shit Done) — 30+ gsd:* skills | `npx get-shit-done-cc@latest --claude --global` (first install — auto-run by `./install.sh --global`) |
 | feature-dev, commit-commands, pr-review-toolkit | `./plugins.sh` |
 | security-guidance, typescript-lsp, php-lsp | `./plugins.sh` |
 | aws-skills (CDK, serverless, cost-ops, AgentCore) | `./plugins.sh` |
@@ -55,14 +64,11 @@ git clone https://github.com/YOUR_USERNAME/claude-dotfiles.git
 cd claude-dotfiles
 chmod +x install.sh plugins.sh project-init.sh
 
-# Install global skills + CLAUDE.md
+# Install global skills + CLAUDE.md + settings.json + GSD (auto)
 ./install.sh --global
 
 # Install Claude plugins + LSP servers
 ./plugins.sh
-
-# Inside GSD, run:
-# /gsd:update
 ```
 
 ## Installing into a project

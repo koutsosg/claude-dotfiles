@@ -63,7 +63,7 @@ install_plugins() {
   claude plugin install iac-terraform@devops-skills      # Terraform + Terragrunt, modules, state
   claude plugin install aws-cost-optimization@devops-skills  # S3/Lambda FinOps
   claude plugin install ci-cd@devops-skills              # GitHub Actions, GitLab CI, pipeline security
-  npx skills add https://github.com/jeffallan/claude-skills --skill sre-engineer  # SLO/monitoring/incident response
+  npx skills add https://github.com/jeffallan/claude-skills --skill sre-engineer || echo "  sre-engineer: install manually if needed"  # SLO/monitoring/incident response
 
   echo ""
   echo "Plugin install complete. Run: claude plugin list"
@@ -102,9 +102,8 @@ install_npm() {
 install_gsd_note() {
   echo ""
   echo "=== GSD (Get Shit Done) ==="
-  echo "GSD is self-managed — do NOT install manually."
-  echo "Inside any Claude Code session, run: /gsd:update"
-  echo "This installs/updates all gsd:* skills, agents, hooks, and commands."
+  echo "GSD is auto-installed by ./install.sh --global."
+  echo "To update GSD, open Claude Code and run: /gsd:update"
 }
 
 # ── Dispatch ───────────────────────────────────────────────────────────────────

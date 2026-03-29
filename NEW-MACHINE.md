@@ -51,7 +51,9 @@ bash $HOME\claude-dotfiles\install.sh --global
 
 Installs into `~/.claude/`:
 - `CLAUDE.md` — global rules (language, style, git behavior, etc.)
-- `skills/skill-builder/`, `skills/skill-design-guide/`, `skills/ui-ux-pro-max/`
+- `skills/skill-builder/`, `skills/skill-design-guide/`, `skills/ui-ux-pro-max/`, `skills/notebooklm/`
+- `settings.json` — merged portable settings (enabledPlugins, alwaysThinkingEnabled)
+- GSD (Get Shit Done) — auto-installed via `npx get-shit-done-cc@latest --claude --global`
 
 ---
 
@@ -79,13 +81,9 @@ Installs:
 
 ## Step 4 — GSD (Get Shit Done)
 
-Open Claude Code and run:
+GSD is now **auto-installed** by `./install.sh --global` (Step 2). No manual action needed.
 
-```
-/gsd:update
-```
-
-GSD is self-managed — never install it manually. This installs all `gsd:*` skills, agents, hooks, and commands.
+> For future updates, open Claude Code and run `/gsd:update`.
 
 ---
 
@@ -186,6 +184,7 @@ Don't make any code changes yet — just report.
 |------|----------------------|-------------|
 | Update dotfiles | `cd $HOME\claude-dotfiles; git pull; bash install.sh --all; bash plugins.sh` | `cd ~/claude-dotfiles && git pull && ./install.sh --all && ./plugins.sh` |
 | Update GSD | `/gsd:update` inside Claude Code | same |
+| First GSD install | auto via `./install.sh --global` | same |
 | Install project skills | `bash $HOME\claude-dotfiles\install.sh --project` | `~/claude-dotfiles/install.sh --project` |
 | Resume GSD work | `/gsd:resume-work` inside Claude Code | same |
 | Check GSD progress | `/gsd:progress` inside Claude Code | same |
